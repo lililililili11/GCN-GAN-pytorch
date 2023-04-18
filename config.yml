@@ -15,4 +15,4 @@ pretrain_epoches: 10
 gan_epoches: 2
 gradient_clip: 5.0
 weight_clip: 0.01
-epsilon: 0.01
+epsilon: 0.01  
