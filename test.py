@@ -5,8 +5,7 @@ from torch.utils.data.dataloader import DataLoader
 from utils import LPDataset
 from utils import MSE, EdgeWiseKL, MissRate
 
-config = yaml.load(open('config.yml'))
-
+config = yaml.load(open('config.yml'),Loader=yaml.FullLoader)
 node_num = config['node_num']
 window_size = config['window_size']
 

@@ -43,7 +43,7 @@ class Generator(nn.Module):
         )
         self.ffn = nn.Sequential(
             nn.Linear(lstm_features, node_num * node_num),
-            nn.Sigmoid()
+            nn.Sigmoid(inplace=False)
         )
 
     def forward(self, in_shots):
@@ -75,7 +75,6 @@ class Discriminator(nn.Module):
             nn.Linear(hidden_size, 1),
             nn.Sigmoid()
         )
-
     def forward(self, input):
         """
         :param input: FloatTensor (batch_size, input_size)

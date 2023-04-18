@@ -4,11 +4,11 @@ import numpy as np
 from utils import get_snapshot
 
 # load config
-
-config = yaml.load(open('config.yml'))
+file = open('config.yml', 'r', encoding="utf-8")
+file_data = file.read()
+config=yaml.load(file_data,Loader=yaml.FullLoader) 
 
 # build path
-
 base_path = os.path.join('./data/', config['dataset'])
 raw_base_path = os.path.join(base_path, 'raw')
 train_save_path = os.path.join(base_path, 'train.npy')

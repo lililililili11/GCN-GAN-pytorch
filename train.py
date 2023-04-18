@@ -6,8 +6,7 @@ from torch.utils.data.dataloader import DataLoader
 from model import Generator, Discriminator
 from utils import LPDataset
 
-config = yaml.load(open('config.yml'))
-
+config = yaml.load(open('config.yml'),Loader=yaml.FullLoader)
 node_num = config['node_num']
 window_size = config['window_size']
 
@@ -82,14 +81,14 @@ for epoch in range(config['gan_epoches']):
         real_logit = discriminator(sample).mean()
         fake_logit = discriminator(predicted_shot).mean()
         discriminator_loss = -real_logit + fake_logit
+        generator_loss = -fake_logit
         discriminator_loss.backward(retain_graph=True)
+        generator_loss.backward()
         discriminator_optimizer.step()
+        generator_optimizer.step()
         for p in discriminator.parameters():
             p.data.clamp_(-config['weight_clip'], config['weight_clip'])
         # update generator
-        generator_loss = -fake_logit
-        generator_loss.backward()
-        generator_optimizer.step()
         out_shot = out_shot.view(config['batch_size'], -1)
         mse_loss = mse(predicted_shot, out_shot)
         print('[epoch %d] [step %d] [d_loss %.4f] [g_loss %.4f] [mse_loss %.4f]' % (epoch, i,
