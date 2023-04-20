@@ -6,7 +6,9 @@ from torch.utils.data.dataloader import DataLoader
 from model import Generator, Discriminator
 from utils import LPDataset
 
-config = yaml.load(open('config.yml'),Loader=yaml.FullLoader)
+file = open('config.yml', 'r', encoding="utf-8")
+file_data = file.read()
+config=yaml.load(file_data,Loader=yaml.FullLoader)
 node_num = config['node_num']
 window_size = config['window_size']
 
@@ -17,9 +19,9 @@ train_data = LPDataset(train_save_path, window_size)
 sample_data = LPDataset(train_save_path, window_size)
 train_loader = DataLoader(
     dataset=train_data,
-    batch_size=config['batch_size'],
-    shuffle=True,
-    pin_memory=True
+    batch_size=config['batch_size'], #批量加载的样本数
+    shuffle=True,  #每次epoch是否重新整理数据
+    pin_memory=True #是否拷贝数据到cuda
 )
 sample_loader = DataLoader(
     dataset=sample_data,
@@ -49,7 +51,7 @@ mse = nn.MSELoss(reduction='sum')
 pretrain_optimizer = optim.RMSprop(generator.parameters(), lr=config['pretrain_learning_rate'])
 generator_optimizer = optim.RMSprop(generator.parameters(), lr=config['g_learning_rate'])
 discriminator_optimizer = optim.RMSprop(discriminator.parameters(), lr=config['d_learning_rate'])
-#
+
 print('pretrain generator')
 
 for epoch in range(config['pretrain_epoches']):

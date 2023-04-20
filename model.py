@@ -12,7 +12,7 @@ class GraphConvolution(nn.Module):
         self._reset_parameters()
 
     def _reset_parameters(self):
-        init.xavier_uniform_(self.weights)
+        init.xavier_uniform_(self.weights) #初始化 均匀分布
 
     def forward(self, adjacency, nodes):
         """
@@ -22,7 +22,7 @@ class GraphConvolution(nn.Module):
         """
         batch_size = adjacency.size(0)
         window_size, in_features, out_features = self.weights.size()
-        weights = self.weights.unsqueeze(0).expand(batch_size, window_size, in_features, out_features)
+        weights = self.weights.unsqueeze(0).expand(batch_size, window_size, in_features, out_features) #unsqueeze为扩展维度
         output = adjacency.matmul(nodes).matmul(weights)
         return output
 
@@ -43,7 +43,7 @@ class Generator(nn.Module):
         )
         self.ffn = nn.Sequential(
             nn.Linear(lstm_features, node_num * node_num),
-            nn.Sigmoid(inplace=False)
+            nn.Sigmoid()
         )
 
     def forward(self, in_shots):

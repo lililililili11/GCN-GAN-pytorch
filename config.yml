@@ -1,7 +1,7 @@
 dataset: UCSB
 node_num: 38
-window_size: 10
-max_thres: 2000
+window_size: 10 #l=10 表示之前10个的时间切片
+max_thres: 2000 #最大的权重值
 test_rate: 0.1
 in_features: 1
 out_features: 64
